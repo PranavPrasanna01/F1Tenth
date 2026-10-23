@@ -25,6 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'wall_follow_node = wall_follow.wall_follow_node:main',
+            'follow_the_gap_node = wall_follow.follow_the_gap_node:main',
         ],
     },
 )
