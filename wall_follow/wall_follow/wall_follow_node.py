@@ -110,7 +110,7 @@ class WallFollowNode(Node):
 
 def main(args = None):
     rclpy.init(args = args, signal_handler_options=SignalHandlerOptions.NO)
-    node = FollowTheGapNode()
+    node = WallFollowNode()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
