@@ -3,6 +3,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from ackermann_msgs.msg import AckermannDriveStamped
+from rclpy.signals import SignalHandlerOptions
 
 class WallFollowNode(Node):
     LOOKAHEAD_L = 1.0          # Lookahead distance (L from lecture)
