@@ -25,13 +25,14 @@ class FollowTheGapNode(Node):
         self.bubble_radius = 0.4   # Safety bubble radius in meters
         self.last_logged_sec = 0
 
+
         self.get_logger().info('Follow the Gap Node initialized with logging & guards.')
 
     def preprocess_scan(self, ranges, angle_min, angle_increment):
-        ranges = np.array(ranges, dtype=np.float32)
+        ranges = np.array(ranges, dtype = np.float32)
         
         # Replace NaN / Inf with 0.0
-        ranges = np.nan_to_num(ranges, nan=0.0, posinf=0.0, neginf=0.0)
+        ranges = np.nan_to_num(ranges, nan = 0.0, posinf = self.MAX_RANGE_CLIP, neginf = 0.0)
         
         # Crop to ±90 degrees field of view
         fov_min = -math.pi / 2
