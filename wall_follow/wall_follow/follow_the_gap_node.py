@@ -4,6 +4,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from ackermann_msgs.msg import AckermannDriveStamped
+from rclpy.signals import SignalHandlerOptions
 
 class FollowTheGapNode(Node):
     MAX_STEER = 0.4          # Steering clamp in radians (~±0.4 rad)
@@ -133,13 +134,17 @@ class FollowTheGapNode(Node):
 
         self.publisher.publish(drive_msg)
 
-def main(args=None):
-    rclpy.init(args=args)
+def main(args = None):
+    rclpy.init(args = args, signal_handler_options = SignalHandlerOptions.NO)
     node = FollowTheGapNode()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        pass
+        stop = AckermannDriveStamped()
+        stop.drive.speed = 0.0
+        stop.drive.steering_angle = 0.0
+        for _ in range(3):
+            node.publisher.publish(stop)
     finally:
         node.destroy_node()
         if rclpy.ok():

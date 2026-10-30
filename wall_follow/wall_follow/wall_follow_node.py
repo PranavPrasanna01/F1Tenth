@@ -107,20 +107,21 @@ class WallFollowNode(Node):
 
         self.publisher.publish(drive_msg)
 
-def main(args=None):
-    rclpy.init(args=args)
-    node = WallFollowNode()
+def main(args = None):
+    rclpy.init(args = args, signal_handler_options=SignalHandlerOptions.NO)
+    node = FollowTheGapNode()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        stop_msg = AckermannDriveStamped()
-        stop_msg.drive.speed = 0.0
-        stop_msg.drive.steering_angle = 0.0
-        node.publisher.publish(stop_msg)
-        node.get_logger().info('Stopping car safely.')
+        stop = AckermannDriveStamped()
+        stop.drive.speed = 0.0
+        stop.drive.steering_angle = 0.0
+        for _ in range(3):
+            node.publisher.publish(stop)
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
